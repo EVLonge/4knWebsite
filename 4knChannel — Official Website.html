@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>4knChannel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+/* ── reset & tokens ─────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --night:    #0e0e18;
+  --night2:   #13131f;
+  --night3:   #1a1a2e;
+  --violet:   #7F77DD;
+  --violet-d: #534AB7;
+  --violet-l: #AFA9EC;
+  --teal:     #1D9E75;
+  --teal-d:   #085041;
+  --coral:    #D85A30;
+  --amber:    #FAC775;
+  --cream:    #f5f0e8;
+  --gray:     #a0a0b8;
+  --gray-d:   #5a5a72;
+  --border:   rgba(127,119,221,0.15);
+  --f-head:   'Space Grotesk', sans-serif;
+  --f-mono:   'Space Mono', monospace;
+}
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--f-head);
+  background: var(--night);
+  color: var(--cream);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ── nav ─────────────────────────────────────────────────────────────────── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 0 48px;
+  height: 64px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(14,14,24,0.88);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo {
+  font-family: var(--f-mono);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--cream);
+  text-decoration: none;
+  letter-spacing: 0.02em;
+}
+.nav-logo span { color: var(--violet); }
+.nav-links {
+  display: flex; gap: 36px; list-style: none;
+}
+.nav-links a {
+  font-family: var(--f-mono);
+  font-size: 0.72rem;
+  color: var(--gray);
+  text-decoration: none;
+  letter-spacing: 0.06em;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--cream); }
+.nav-cta {
+  font-family: var(--f-mono);
+  font-size: 0.72rem;
+  padding: 8px 18px;
+  border: 1px solid var(--violet);
+  color: var(--violet);
+  text-decoration: none;
+  letter-spacing: 0.06em;
+  transition: background 0.2s, color 0.2s;
+}
+.nav-cta:hover { background: var(--violet); color: #fff; }
+
+/* ── hero ─────────────────────────────────────────────────────────────────── */
+#hero {
+  position: relative;
+  height: 100vh;
+  display: flex; align-items: flex-end;
+  padding: 0 48px 80px;
+  overflow: hidden;
+}
+#heroCanvas {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+}
+.hero-content {
+  position: relative; z-index: 2;
+  max-width: 680px;
+}
+.hero-origin {
+  font-family: var(--f-mono);
+  font-size: 0.72rem;
+  color: var(--teal);
+  letter-spacing: 0.08em;
+  margin-bottom: 20px;
+}
+.hero-title {
+  font-size: clamp(3.2rem, 8vw, 7rem);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  color: var(--cream);
+  margin-bottom: 24px;
+}
+.hero-sub {
+  font-size: 1.05rem;
+  color: var(--gray);
+  font-weight: 300;
+  max-width: 480px;
+  line-height: 1.65;
+  margin-bottom: 36px;
+}
+.hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
+.btn-primary {
+  display: inline-block;
+  padding: 14px 28px;
+  background: var(--violet);
+  color: #fff;
+  font-family: var(--f-mono);
+  font-size: 0.8rem;
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  transition: background 0.2s, transform 0.15s;
+}
+.btn-primary:hover { background: var(--violet-d); transform: translateY(-1px); }
+.btn-ghost {
+  display: inline-block;
+  padding: 14px 28px;
+  border: 1px solid var(--gray-d);
+  color: var(--gray);
+  font-family: var(--f-mono);
+  font-size: 0.8rem;
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  transition: border-color 0.2s, color 0.2s;
+}
+.btn-ghost:hover { border-color: var(--cream); color: var(--cream); }
+
+/* ── section base ────────────────────────────────────────────────────────── */
+section { padding: 100px 48px; }
+.section-tag {
+  font-family: var(--f-mono);
+  font-size: 0.68rem;
+  color: var(--violet);
+  letter-spacing: 0.1em;
+  margin-bottom: 16px;
+  display: block;
+}
+.section-title {
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+  color: var(--cream);
+  margin-bottom: 16px;
+}
+.section-body {
+  font-size: 1rem;
+  color: var(--gray);
+  max-width: 560px;
+  line-height: 1.7;
+}
+.ruled { border-top: 1px solid var(--border); }
+
+/* ── music section ───────────────────────────────────────────────────────── */
+#music { background: var(--night2); }
+.music-header { margin-bottom: 56px; }
+.track-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2px;
+}
+.track-card {
+  background: var(--night3);
+  padding: 28px 24px;
+  position: relative;
+  border-left: 2px solid transparent;
+  transition: border-color 0.2s, background 0.2s;
+  cursor: pointer;
+}
+.track-card:hover { border-left-color: var(--violet); background: #1f1f32; }
+.track-card.playing { border-left-color: var(--teal); }
+.track-num {
+  font-family: var(--f-mono);
+  font-size: 0.65rem;
+  color: var(--gray-d);
+  margin-bottom: 10px;
+  letter-spacing: 0.06em;
+}
+.track-name {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--cream);
+  margin-bottom: 6px;
+}
+.track-dur {
+  font-family: var(--f-mono);
+  font-size: 0.72rem;
+  color: var(--gray);
+}
+.track-genre {
+  font-family: var(--f-mono);
+  font-size: 0.65rem;
+  color: var(--violet-l);
+  margin-top: 14px;
+  letter-spacing: 0.04em;
+}
+.track-play-icon {
+  position: absolute; right: 20px; top: 50%;
+  transform: translateY(-50%);
+  width: 36px; height: 36px;
+  border: 1px solid var(--gray-d);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--gray);
+  font-size: 0.7rem;
+  transition: border-color 0.2s, color 0.2s;
+}
+.track-card:hover .track-play-icon { border-color: var(--violet); color: var(--violet); }
+
+/* inline audio player */
+.now-playing {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 200;
+  background: var(--night3);
+  border-top: 1px solid var(--border);
+  padding: 12px 48px;
+  display: none;
+  align-items: center;
+  gap: 24px;
+}
+.now-playing.visible { display: flex; }
+.np-title { font-size: 0.85rem; font-weight: 600; color: var(--cream); min-width: 160px; }
+.np-controls { display: flex; align-items: center; gap: 12px; }
+.np-btn {
+  background: none; border: none; cursor: pointer;
+  color: var(--cream); font-size: 1rem; padding: 4px;
+}
+.np-progress-wrap {
+  flex: 1; height: 3px; background: var(--gray-d);
+  cursor: pointer; position: relative;
+}
+.np-progress-fill {
+  height: 100%; background: var(--violet);
+  width: 0%; transition: width 0.1s linear;
+  pointer-events: none;
+}
+.np-time {
+  font-family: var(--f-mono);
+  font-size: 0.68rem; color: var(--gray); min-width: 80px; text-align: right;
+}
+.np-close { background: none; border: none; color: var(--gray); cursor: pointer; font-size: 1rem; }
+
+/* streaming links */
+.stream-section { margin-top: 60px; padding-top: 48px; border-top: 1px solid var(--border); }
+.stream-title { font-size: 0.9rem; font-weight: 500; color: var(--gray); margin-bottom: 24px; }
+.stream-links { display: flex; flex-wrap: wrap; gap: 12px; }
+.stream-link {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 20px;
+  border: 1px solid var(--border);
+  color: var(--gray);
+  text-decoration: none;
+  font-family: var(--f-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  transition: border-color 0.2s, color 0.2s;
+}
+.stream-link:hover { border-color: var(--violet); color: var(--cream); }
+.stream-link svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+/* ── visualizer section ──────────────────────────────────────────────────── */
+#visualizer { background: var(--night); }
+.viz-header { margin-bottom: 40px; }
+.viz-frame {
+  background: var(--night2);
+  border: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+.viz-canvas-wrap {
+  width: 100%; padding-top: 45%;
+  position: relative;
+}
+#vizCanvas {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+}
+.viz-controls {
+  padding: 16px 24px;
+  display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+  border-top: 1px solid var(--border);
+  background: var(--night3);
+}
+.viz-upload-btn {
+  font-family: var(--f-mono);
+  font-size: 0.72rem;
+  padding: 8px 16px;
+  background: var(--violet);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  transition: background 0.2s;
+}
+.viz-upload-btn:hover { background: var(--violet-d); }
+#vizFileInput { display: none; }
+.viz-mode-select {
+  font-family: var(--f-mono);
+  font-size: 0.72rem;
+  background: var(--night);
+  border: 1px solid var(--border);
+  color: var(--cream);
+  padding: 8px 12px;
+  cursor: pointer;
+}
+.viz-palette { display: flex; gap: 8px; }
+.viz-dot {
+  width: 16px; height: 16px; border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+.viz-dot:hover, .viz-dot.active { border-color: #fff; transform: scale(1.2); }
+.viz-info {
+  font-family: var(--f-mono);
+  font-size: 0.68rem;
+  color: var(--gray-d);
+  margin-left: auto;
+}
+.viz-open-link {
+  font-family: var(--f-mono);
+  font-size: 0.68rem;
+  color: var(--violet);
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  padding: 8px 12px;
+  border: 1px solid var(--violet-d);
+  transition: background 0.2s;
+}
+.viz-open-link:hover { background: rgba(127,119,221,0.1); }
+
+/* ── about section ───────────────────────────────────────────────────────── */
+#about { background: var(--night2); }
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  margin-top: 56px;
+}
+.about-text p + p { margin-top: 16px; }
+.about-text p { color: var(--gray); line-height: 1.75; }
+.about-tracks {
+  display: flex; flex-direction: column; gap: 2px;
+}
+.about-track-row {
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+.about-track-row:first-child { border-top: 1px solid var(--border); }
+.about-track-name {
+  font-size: 0.9rem; font-weight: 500; color: var(--cream);
+}
+.about-track-meta {
+  font-family: var(--f-mono);
+  font-size: 0.65rem;
+  color: var(--gray-d);
+  letter-spacing: 0.04em;
+}
+.about-socials { margin-top: 40px; display: flex; gap: 16px; flex-wrap: wrap; }
+.social-link {
+  font-family: var(--f-mono);
+  font-size: 0.72rem;
+  color: var(--gray);
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  padding-bottom: 2px;
+  border-bottom: 1px solid var(--gray-d);
+  transition: color 0.2s, border-color 0.2s;
+}
+.social-link:hover { color: var(--violet); border-color: var(--violet); }
+
+/* ── blog section ────────────────────────────────────────────────────────── */
+#posts { background: var(--night); }
+.posts-header { margin-bottom: 56px; }
+.post-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 2px;
+}
+.post-card {
+  background: var(--night2);
+  padding: 32px 28px;
+  transition: background 0.2s;
+  cursor: pointer;
+}
+.post-card:hover { background: var(--night3); }
+.post-date {
+  font-family: var(--f-mono);
+  font-size: 0.65rem;
+  color: var(--gray-d);
+  margin-bottom: 14px;
+  letter-spacing: 0.05em;
+}
+.post-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--cream);
+  margin-bottom: 10px;
+  line-height: 1.3;
+}
+.post-excerpt {
+  font-size: 0.875rem;
+  color: var(--gray);
+  line-height: 1.65;
+}
+.post-tag {
+  display: inline-block;
+  margin-top: 20px;
+  font-family: var(--f-mono);
+  font-size: 0.62rem;
+  padding: 3px 8px;
+  border: 1px solid var(--border);
+  color: var(--violet-l);
+  letter-spacing: 0.05em;
+}
+
+/* ── contact section ─────────────────────────────────────────────────────── */
+#contact { background: var(--night2); }
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  margin-top: 56px;
+  align-items: start;
+}
+.contact-info p { color: var(--gray); line-height: 1.7; margin-bottom: 32px; }
+.contact-email {
+  font-family: var(--f-mono);
+  font-size: 1rem;
+  color: var(--cream);
+  text-decoration: none;
+  border-bottom: 1px solid var(--gray-d);
+  padding-bottom: 2px;
+  transition: border-color 0.2s, color 0.2s;
+  display: inline-block;
+  margin-bottom: 32px;
+}
+.contact-email:hover { color: var(--violet); border-color: var(--violet); }
+.contact-note {
+  font-family: var(--f-mono);
+  font-size: 0.7rem;
+  color: var(--gray-d);
+  line-height: 1.6;
+}
+.contact-form { display: flex; flex-direction: column; gap: 16px; }
+.form-field { display: flex; flex-direction: column; gap: 6px; }
+.form-field label {
+  font-family: var(--f-mono);
+  font-size: 0.65rem;
+  color: var(--gray-d);
+  letter-spacing: 0.06em;
+}
+.form-field input,
+.form-field textarea,
+.form-field select {
+  background: var(--night);
+  border: 1px solid var(--border);
+  color: var(--cream);
+  padding: 12px 14px;
+  font-family: var(--f-head);
+  font-size: 0.875rem;
+  outline: none;
+  transition: border-color 0.2s;
+  resize: vertical;
+}
+.form-field input:focus,
+.form-field textarea:focus,
+.form-field select:focus { border-color: var(--violet); }
+.form-field select option { background: var(--night2); }
+.form-submit {
+  padding: 14px 28px;
+  background: var(--violet);
+  color: #fff;
+  border: none;
+  font-family: var(--f-mono);
+  font-size: 0.8rem;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  transition: background 0.2s;
+  align-self: flex-start;
+}
+.form-submit:hover { background: var(--violet-d); }
+
+/* ── footer ──────────────────────────────────────────────────────────────── */
+footer {
+  background: var(--night3);
+  padding: 40px 48px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.footer-logo {
+  font-family: var(--f-mono);
+  font-size: 0.85rem;
+  color: var(--cream);
+}
+.footer-logo span { color: var(--violet); }
+.footer-copy {
+  font-family: var(--f-mono);
+  font-size: 0.65rem;
+  color: var(--gray-d);
+  letter-spacing: 0.04em;
+}
+
+/* ── responsive ──────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  nav { padding: 0 20px; }
+  .nav-links { display: none; }
+  #hero { padding: 0 20px 60px; }
+  section { padding: 72px 20px; }
+  .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 40px; }
+  footer { padding: 32px 20px; }
+  .now-playing { padding: 12px 16px; }
+  .np-title { min-width: unset; font-size: 0.75rem; }
+}
+
+/* ── reduced motion ──────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── navigation ─────────────────────────────────────────────────────────── -->
+<nav>
+  <a class="nav-logo" href="#hero">4kn<span>Channel</span></a>
+  <ul class="nav-links">
+    <li><a href="#music">Music</a></li>
+    <li><a href="#visualizer">Visualizer</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#posts">Journal</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a class="nav-cta" href="#contact">Book / Collab</a>
+</nav>
+
+<!-- ── hero ───────────────────────────────────────────────────────────────── -->
+<section id="hero">
+  <canvas id="heroCanvas"></canvas>
+  <div class="hero-content">
+    <p class="hero-origin">Nigeria</p>
+    <h1 class="hero-title">Sound that doesn't fit one box.<br><span style="color:var(--gray);font-size:0.55em;font-weight:300;letter-spacing:-0.01em">Music for the escapist.</span></h1>
+    <p class="hero-sub">Electronic, jazz, alternative pop, hip hop, trap, RnB, rock and lofi trance — built from a bedroom, meant for the world.</p>
+    <div class="hero-actions">
+      <a href="#music" class="btn-primary">Listen now</a>
+      <a href="#contact" class="btn-ghost">Work together</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── music ──────────────────────────────────────────────────────────────── -->
+<section id="music" class="ruled">
+  <div class="music-header">
+    <span class="section-tag">Releases</span>
+    <h2 class="section-title">The catalogue</h2>
+    <p class="section-body">Genre-bending tracks, each a different journey. Find them on the streaming platform of your choice.</p>
+  </div>
+
+  <div class="track-grid" id="trackGrid"></div>
+
+  <div class="stream-section">
+    <p class="stream-title">Stream everywhere</p>
+    <div class="stream-links">
+      <a class="stream-link" href="https://www.youtube.com/@4knChannel" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1C24 15.9 24 12 24 12s0-3.9-.5-5.8zM9.7 15.5V8.5l6.3 3.5-6.3 3.5z"/></svg>
+        YouTube
+      </a>
+      <a class="stream-link" href="https://open.spotify.com/album/5Jq1B5yPcujQXXqUojtkn6?si=f-gKUsENSV2BaTPrt7fbPA" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.6 0 12 0zm5.5 17.3c-.2.3-.6.4-.9.2-2.6-1.6-5.8-1.9-9.6-1-.4.1-.7-.2-.8-.5-.1-.4.2-.7.5-.8 4.2-1 7.7-.6 10.6 1.2.3.2.4.6.2.9zm1.5-3.3c-.3.4-.8.5-1.1.2-2.9-1.8-7.4-2.3-10.8-1.3-.4.1-.9-.1-1-.6-.1-.4.1-.9.6-1 3.9-1.2 8.8-.6 12.1 1.5.3.3.5.8.2 1.2zm.1-3.4c-3.5-2.1-9.3-2.3-12.7-1.3-.5.2-1-.2-1.1-.7-.2-.5.2-1 .7-1.1 3.9-1.2 10.3-.9 14.3 1.4.5.3.6.9.3 1.4-.3.5-.9.6-1.5.3z"/></svg>
+        Spotify
+      </a>
+      <a class="stream-link" href="https://music.apple.com/us/album/project-97/6814761838" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.994 6.124a9.23 9.23 0 0 0-.24-2.19c-.317-1.31-1.062-2.31-2.18-3.043a6.8 6.8 0 0 0-1.895-.84c-.55-.14-1.11-.234-1.675-.283a27 27 0 0 0-1.036-.06L12 .001l-4.97.007c-.348.007-.696.02-1.044.04-.605.04-1.205.107-1.79.25A6.7 6.7 0 0 0 2.24 1.41C1.141 2.138.385 3.15.078 4.47a9 9 0 0 0-.073 1.065C0 5.768 0 6 0 6v12c0 .232 0 .464.005.696.02.663.09 1.322.261 1.97.318 1.31 1.063 2.308 2.18 3.043.532.347 1.13.576 1.75.733.587.15 1.186.224 1.79.267.37.025.74.04 1.11.044.316.004.633.005.95.005H16c.31 0 .62-.001.93-.005.41-.004.82-.02 1.23-.05.6-.04 1.2-.115 1.784-.27a6.7 6.7 0 0 0 1.75-.73c1.117-.735 1.862-1.733 2.18-3.043.17-.65.24-1.31.26-1.97.005-.232.006-.464.006-.696V6c0-.232 0-.465-.005-.697-.005-.393-.037-.785-.141-1.179zM12 17.5c-3.038 0-5.5-2.462-5.5-5.5S8.962 6.5 12 6.5s5.5 2.462 5.5 5.5-2.462 5.5-5.5 5.5zm0-9c-1.93 0-3.5 1.57-3.5 3.5s1.57 3.5 3.5 3.5 3.5-1.57 3.5-3.5-1.57-3.5-3.5-3.5zm6.5-2a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/></svg>
+        Apple Music
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── visualizer ─────────────────────────────────────────────────────────── -->
+<section id="visualizer" class="ruled">
+  <div class="viz-header">
+    <span class="section-tag">Interactive</span>
+    <h2 class="section-title">Hear it, see it.</h2>
+    <p class="section-body">Drop any track into the visualizer and watch the frequency universe it lives in. Eleven visual modes, all real-time.</p>
+  </div>
+
+  <div class="viz-frame">
+    <div class="viz-canvas-wrap">
+      <canvas id="vizCanvas"></canvas>
+    </div>
+    <div class="viz-controls">
+      <label class="viz-upload-btn">
+        Upload a track
+        <input type="file" id="vizFileInput" accept="audio/*,.mp3,.wav,.m4a,.flac,.ogg">
+      </label>
+      <select class="viz-mode-select" id="vizModeSelect">
+        <option value="bars">Bars</option>
+        <option value="mirror">Mirror</option>
+        <option value="wave">Wave</option>
+        <option value="orbit">Orbit</option>
+        <option value="spiral">Spiral</option>
+        <option value="polygon">Polygon</option>
+        <option value="particles">Particles</option>
+        <option value="dna">DNA Helix</option>
+        <option value="galaxy">Galaxy</option>
+        <option value="plasma">Plasma</option>
+      </select>
+      <div class="viz-palette">
+        <div class="viz-dot active" style="background:#7F77DD" data-p="v" title="Violet"></div>
+        <div class="viz-dot" style="background:#1D9E75" data-p="t" title="Teal"></div>
+        <div class="viz-dot" style="background:#D85A30" data-p="c" title="Coral"></div>
+        <div class="viz-dot" style="background:#FAC775" data-p="a" title="Amber"></div>
+        <div class="viz-dot" style="background:conic-gradient(#f55,#ff5,#5f5,#55f,#f55)" data-p="r" title="Rainbow"></div>
+      </div>
+      <span class="viz-info" id="vizInfo">Drop a track to begin</span>
+      <a class="viz-open-link" href="4knChannel_visualizer_v3.html" target="_blank">Full studio</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── about ──────────────────────────────────────────────────────────────── -->
+<section id="about" class="ruled">
+  <span class="section-tag">About</span>
+  <h2 class="section-title">4knChannel</h2>
+  <div class="about-grid">
+    <div class="about-text">
+      <p>4knChannel is the music project of Trippy — a producer and artist based in Nigeria, building a sound that refuses genre assignment.</p>
+      <p>The catalogue sits somewhere between electronic trance and jazz harmony, lo-fi texture and live rock energy. Every track is structural — built with intention around energy arcs, not just vibes.</p>
+      <p>This is a bedroom project made for the world. No label. No formula. Just the work.</p>
+      <p style="margin-top:16px;font-size:0.85rem;color:var(--gray-d)">Drawn from the worlds of Coldplay, Migos, André 3000, Dr. Dre, Queen, Logic, Sad Night Dynamite and Twenty One Pilots.</p>
+      <div class="about-socials">
+        <a class="social-link" href="https://www.instagram.com/4knmoody?stkn=aWcyNmlhY2ZhMzJ0&utm_source=qr" target="_blank">Instagram</a>
+        <a class="social-link" href="https://www.youtube.com/@4knChannel" target="_blank">YouTube</a>
+        <a class="social-link" href="https://www.threads.com/@4knmoody?igshid=NTc4MTIwNjQ2YQ%3D%3D" target="_blank">Threads</a>
+      </div>
+    </div>
+    <div>
+      <div class="about-tracks" id="aboutTrackList"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── posts / journal ────────────────────────────────────────────────────── -->
+<section id="posts" class="ruled">
+  <div class="posts-header">
+    <span class="section-tag">Journal</span>
+    <h2 class="section-title">Behind the sound</h2>
+    <p class="section-body">Process notes, production breakdowns, and thoughts on making music that doesn't follow a rulebook. Frequency, silence, genre collision, and the pursuit of the ultimate sound.</p>
+  </div>
+  <div class="post-grid" id="postGrid"></div>
+</section>
+
+<!-- ── contact ────────────────────────────────────────────────────────────── -->
+<section id="contact" class="ruled">
+  <span class="section-tag">Contact</span>
+  <h2 class="section-title">Work together.</h2>
+  <div class="contact-grid">
+    <div class="contact-info">
+      <p>Open to sync licensing, collaborative production, remixes, features, and performance enquiries. Whether you're a filmmaker, brand, artist or just a fan — the door is open.</p>
+      <a class="contact-email" href="mailto:4kntrippy@gmail.com">4kntrippy@gmail.com</a>
+      <p class="contact-note">Based in Nigeria. Available for remote work and international projects. Response time is usually within 24 hours.</p>
+    </div>
+    <form class="contact-form" id="contactForm">
+      <div class="form-field">
+        <label>Your name</label>
+        <input type="text" placeholder="Name" required>
+      </div>
+      <div class="form-field">
+        <label>Email</label>
+        <input type="email" placeholder="email@example.com" required>
+      </div>
+      <div class="form-field">
+        <label>What is this about?</label>
+        <select>
+          <option value="">Select a topic</option>
+          <option>Sync / Licensing</option>
+          <option>Collaboration / Feature</option>
+          <option>Remix</option>
+          <option>Live / Performance</option>
+          <option>General</option>
+        </select>
+      </div>
+      <div class="form-field">
+        <label>Message</label>
+        <textarea rows="5" placeholder="Tell me what you have in mind..." required></textarea>
+      </div>
+      <button type="submit" class="form-submit">Send message</button>
+    </form>
+  </div>
+</section>
+
+<!-- ── footer ─────────────────────────────────────────────────────────────── -->
+<footer>
+  <div class="footer-logo">4kn<span>Channel</span></div>
+  <div class="footer-copy">© 2025 4knChannel. Nigeria. All rights reserved.</div>
+</footer>
+
+<!-- ── now playing bar ────────────────────────────────────────────────────── -->
+<div class="now-playing" id="nowPlaying">
+  <div class="np-title" id="npTitle">—</div>
+  <div class="np-controls">
+    <button class="np-btn" id="npPlayBtn" onclick="toggleNpPlay()">▶</button>
+  </div>
+  <div class="np-progress-wrap" id="npProgressWrap" onclick="seekNp(event)">
+    <div class="np-progress-fill" id="npProgressFill"></div>
+  </div>
+  <div class="np-time" id="npTime">0:00 / 0:00</div>
+  <button class="np-close" onclick="closeNp()">✕</button>
+</div>
+
+<script>
+// ── track data ─────────────────────────────────────────────────────────────
+const TRACKS = [
+  { name: 'Reasons', dur: '5:03', genre: 'Electronic · Jazz · Lofi Trance', yt: 'https://youtu.be/4lWjEkari6s' },
+  { name: 'Lately', dur: '6:56', genre: 'Electronic · Jazz · Lofi Trance', yt: 'https://youtu.be/HQXUDilaGcA' },
+  { name: 'Reset', dur: '', genre: '4knTrippy', yt: 'https://youtu.be/iJ2wX8PKT04' },
+  { name: 'Update', dur: '4:57', genre: '4knTrippy', yt: 'https://youtu.be/XF7kl4GUx6M' },
+  { name: 'Track 5', dur: '', genre: '4knChannel', yt: 'https://youtu.be/8W3PiIbAE6c' },
+  { name: 'Track 6', dur: '', genre: '4knChannel', yt: 'https://youtu.be/CDqSzDFPcVI' },
+];
+
+// ── track grid ─────────────────────────────────────────────────────────────
+const trackGrid = document.getElementById('trackGrid');
+TRACKS.forEach((t, i) => {
+  const card = document.createElement('div');
+  card.className = 'track-card';
+  card.innerHTML = `
+    <div class="track-num">${String(i+1).padStart(2,'0')}</div>
+    <div class="track-name">${t.name}</div>
+    <div class="track-dur">${t.dur}</div>
+    <div class="track-genre">${t.genre}</div>
+    <div class="track-play-icon">▶</div>
+  `;
+  card.addEventListener('click', () => window.open(t.yt, '_blank'));
+  trackGrid.appendChild(card);
+});
+
+// About track list
+const aboutList = document.getElementById('aboutTrackList');
+TRACKS.forEach(t => {
+  aboutList.innerHTML += `
+    <div class="about-track-row">
+      <span class="about-track-name">${t.name}</span>
+      <span class="about-track-meta">${t.genre} · ${t.dur}</span>
+    </div>`;
+});
+
+// ── posts / journal ────────────────────────────────────────────────────────
+const POSTS = [
+  { title: 'The silence is not empty', excerpt: 'Silence in music is not absence. It is tension, breath, anticipation. The spaces between sounds carry as much weight as the notes themselves — sometimes more.', tag: 'Philosophy' },
+  { title: 'Why merging genres is not a gimmick', excerpt: 'When jazz harmony meets trap percussion and lofi texture, something new is created that belongs to none of those genres alone. That collision is the point.', tag: 'Theory' },
+  { title: 'Sound as a tool for the mind', excerpt: 'Different frequency ranges do different things to the brain. Sub-bass grounds you. Mids carry emotion. Highs create alertness. Understanding this shapes every production decision.', tag: 'Science' },
+  { title: 'Making music for focus, sleep and everything in between', excerpt: 'Some tracks are built to carry you through deep work. Others ease you into rest. The intention behind a track changes the choices made — tempo, space, texture, resolution.', tag: 'Process' },
+  { title: 'Building something that sounds like nowhere', excerpt: 'No label. No team. No following. Just making music for the love of music — and refusing to sound like where you came from.', tag: 'Journal' },
+  { title: 'Energy arcs and why structure matters', excerpt: 'Every track has a shape. Building with intention around that shape — where energy rises, where it drops, where silence lands — is what separates a song from a journey.', tag: 'Production' },
+];
+
+const postGrid = document.getElementById('postGrid');
+POSTS.forEach(p => {
+  postGrid.innerHTML += `
+    <div class="post-card">
+      <div class="post-title">${p.title}</div>
+      <div class="post-excerpt">${p.excerpt}</div>
+      <span class="post-tag">${p.tag}</span>
+    </div>`;
+});
+
+// ── contact form (Formspree ready) ─────────────────────────────────────────
+document.getElementById('contactForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const btn = e.target.querySelector('.form-submit');
+  btn.textContent = 'Sent.';
+  btn.style.background = 'var(--teal)';
+  setTimeout(() => { btn.textContent = 'Send message'; btn.style.background = ''; }, 3000);
+  // To wire up: change form action to your Formspree endpoint and remove preventDefault
+});
+
+// ── hero canvas — ambient waveform ─────────────────────────────────────────
+(function() {
+  const canvas = document.getElementById('heroCanvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, mouse = { x: 0.5, y: 0.5 };
+  const bars = Array.from({length: 80}, (_,i) => ({
+    phase: Math.random() * Math.PI * 2,
+    speed: 0.004 + Math.random() * 0.008,
+    baseH: 0.04 + Math.random() * 0.18,
+  }));
+
+  function resize() { W = canvas.width = canvas.offsetWidth; H = canvas.height = canvas.offsetHeight; }
+  window.addEventListener('resize', resize); resize();
+  window.addEventListener('mousemove', e => {
+    mouse.x = e.clientX / window.innerWidth;
+    mouse.y = e.clientY / window.innerHeight;
+  });
+
+  let t = 0;
+  function draw() {
+    requestAnimationFrame(draw);
+    ctx.clearRect(0, 0, W, H);
+
+    // subtle violet glow centred
+    const g = ctx.createRadialGradient(W*mouse.x, H*0.65, 0, W*mouse.x, H*0.65, W*0.55);
+    g.addColorStop(0,   'rgba(127,119,221,0.07)');
+    g.addColorStop(0.5, 'rgba(127,119,221,0.03)');
+    g.addColorStop(1,   'rgba(14,14,24,0)');
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, W, H);
+
+    // waveform bars
+    const barW = W / bars.length;
+    const floor = H * 0.72;
+    bars.forEach((b, i) => {
+      b.phase += b.speed;
+      const mouseInfluence = 1 + (1 - Math.abs(i / bars.length - mouse.x)) * mouse.y * 1.4;
+      const h = Math.sin(b.phase) * b.baseH * H * mouseInfluence;
+      const alpha = 0.18 + Math.abs(Math.sin(b.phase)) * 0.35;
+      ctx.fillStyle = `rgba(127,119,221,${alpha})`;
+      ctx.fillRect(i * barW + 1, floor - Math.abs(h), barW - 2, Math.abs(h));
+    });
+    t++;
+  }
+  draw();
+})();
+
+// ── visualizer ─────────────────────────────────────────────────────────────
+(function() {
+  const canvas  = document.getElementById('vizCanvas');
+  const ctx     = canvas.getContext('2d');
+  const info    = document.getElementById('vizInfo');
+  let W, H, analyser, source, actx, mode = 'bars', pal = 'v', running = false;
+  let beat = 0, energyHist = new Float32Array(50), ePtr = 0, lastBeat = 0;
+
+  const PALS = {
+    v: {p:'#7F77DD',g:'127,119,221'}, t: {p:'#1D9E75',g:'29,158,117'},
+    c: {p:'#D85A30',g:'216,90,48'},  a: {p:'#FAC775',g:'250,199,117'},
+    r: null,
+  };
+  function gc(i,n,al=1) {
+    if (pal==='r') return `hsla(${(i/n)*300+200},80%,65%,${al})`;
+    return `rgba(${PALS[pal].g},${al})`;
+  }
+  function W_() { return canvas.width/devicePixelRatio; }
+  function H_() { return canvas.height/devicePixelRatio; }
+
+  function resize() {
+    const rect = canvas.parentElement.getBoundingClientRect();
+    canvas.width  = rect.width  * devicePixelRatio;
+    canvas.height = rect.height * devicePixelRatio;
+    ctx.scale(devicePixelRatio, devicePixelRatio);
+  }
+  new ResizeObserver(resize).observe(canvas.parentElement); resize();
+
+  document.getElementById('vizFileInput').addEventListener('change', async e => {
+    const file = e.target.files[0]; if (!file) return;
+    if (actx) await actx.close();
+    actx = new (window.AudioContext || window.webkitAudioContext)();
+    analyser = actx.createAnalyser();
+    analyser.fftSize = 2048; analyser.smoothingTimeConstant = 0.72;
+    analyser.connect(actx.destination);
+    const buf = await file.arrayBuffer();
+    const decoded = await actx.decodeAudioData(buf);
+    source = actx.createBufferSource();
+    source.buffer = decoded; source.connect(analyser); source.loop = true; source.start();
+    info.textContent = file.name.replace(/\.[^.]+$/,'');
+    if (!running) { running = true; loop(); }
+  });
+
+  document.getElementById('vizModeSelect').addEventListener('change', e => mode = e.target.value);
+  document.querySelectorAll('.viz-dot').forEach(d => d.addEventListener('click', () => {
+    document.querySelectorAll('.viz-dot').forEach(x => x.classList.remove('active'));
+    d.classList.add('active'); pal = d.dataset.p;
+  }));
+
+  function loop() {
+    requestAnimationFrame(loop);
+    const w = W_(), h = H_();
+    if (!analyser) { drawIdle(w,h); return; }
+    const fd = new Uint8Array(analyser.frequencyBinCount);
+    analyser.getByteFrequencyData(fd);
+    const subBass = avg(fd,0,4);
+    const energy  = subBass*subBass;
+    energyHist[ePtr]=energy; ePtr=(ePtr+1)%50;
+    const eavg = energyHist.reduce((a,b)=>a+b,0)/50;
+    const now = performance.now();
+    if (energy > eavg*1.55 && energy>800 && now-lastBeat>280) {
+      beat=1; lastBeat=now;
+    }
+    beat*=0.80;
+
+    ctx.fillStyle='rgba(14,14,24,0.88)'; ctx.fillRect(0,0,w,h);
+    drawGrid(w,h);
+    const td = new Uint8Array(analyser.frequencyBinCount);
+    analyser.getByteTimeDomainData(td);
+    const modes = {bars:drawBars,mirror:drawMirror,wave:drawWave,orbit:drawOrbit,
+                   spiral:drawSpiral,polygon:drawPolygon,particles:drawParticles,
+                   dna:drawDna,galaxy:drawGalaxy,plasma:drawPlasma};
+    (modes[mode]||drawBars)(fd,td,w,h);
+  }
+
+  function avg(a,lo,hi){let s=0,c=0;for(let i=lo;i<Math.min(hi,a.length);i++){s+=a[i];c++}return c?s/c:0}
+  function drawGrid(w,h){ctx.strokeStyle='rgba(127,119,221,0.04)';ctx.lineWidth=.5;
+    for(let x=0;x<w;x+=50){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,h);ctx.stroke()}
+    for(let y=0;y<h;y+=50){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(w,y);ctx.stroke()}}
+  function drawIdle(w,h){
+    ctx.fillStyle='rgba(14,14,24,.97)';ctx.fillRect(0,0,w,h);
+    const t=Date.now()/1000;
+    ctx.strokeStyle='rgba(127,119,221,.15)';ctx.lineWidth=1;ctx.beginPath();
+    for(let x=0;x<w;x++){const y=h/2+Math.sin(x*.025+t)*4+Math.sin(x*.06+t*1.4)*2;x===0?ctx.moveTo(x,y):ctx.lineTo(x,y)}
+    ctx.stroke();
+    ctx.fillStyle='rgba(127,119,221,.2)';ctx.font='11px Space Mono,monospace';ctx.textAlign='center';
+    ctx.fillText('upload a track to begin',w/2,h/2+28);}
+  function drawBars(fd,_,w,h){
+    const n=80,bw=(w/n)-1.2;
+    for(let i=0;i<n;i++){const v=fd[i]/255,bh=(v+beat*v*.22)*h*.92,x=i*(bw+1.2),y=h-bh;
+      if(v>.45){ctx.shadowColor=gc(i,n);ctx.shadowBlur=5+beat*8}else ctx.shadowBlur=0;
+      const g=ctx.createLinearGradient(x,y,x,h);
+      g.addColorStop(0,gc(i,n,1));g.addColorStop(1,gc(i,n,.15));
+      ctx.fillStyle=g;ctx.fillRect(x,y,bw,bh);}ctx.shadowBlur=0;}
+  function drawMirror(fd,_,w,h){
+    const n=80,bw=(w/n)-1,my=h/2;
+    for(let i=0;i<n;i++){const v=fd[i]/255,bh=(v+beat*v*.2)*my*.88,x=i*(bw+1);
+      if(v>.6){ctx.shadowColor=gc(i,n);ctx.shadowBlur=6+beat*7}else ctx.shadowBlur=0;
+      const g=ctx.createLinearGradient(x,my-bh,x,my+bh);
+      g.addColorStop(0,gc(i,n,.95));g.addColorStop(.5,gc(i,n,.2));g.addColorStop(1,gc(i,n,.95));
+      ctx.fillStyle=g;ctx.fillRect(x,my-bh,bw,bh*2);}ctx.shadowBlur=0;}
+  function drawWave(_,td,w,h){
+    const my=h/2,sw=w/td.length,p=PALS[pal]||PALS.v;
+    ctx.shadowColor=p?p.p:'#7F77DD';ctx.shadowBlur=8+beat*9;
+    ctx.strokeStyle=p?p.p:'#7F77DD';ctx.lineWidth=2+beat*.8;ctx.beginPath();
+    for(let i=0;i<td.length;i++){const v=(td[i]/128)-1,y=my+v*(h*.44)*(1+beat*.18),x=i*sw;i===0?ctx.moveTo(x,y):ctx.lineTo(x,y)}
+    ctx.stroke();ctx.shadowBlur=0;}
+
+  let spiralAngle=0,polyRot=0,dnaOffset=0,galaxyAngle=0;
+  let stars=null,particles_arr=null,plasmaBlobs=null;
+
+  function drawSpiral(fd,_,w,h){
+    spiralAngle+=0.018+beat*.035;
+    const cx=w/2,cy=h/2,n=200,maxR=Math.min(w,h)*(.43+beat*.04);
+    ctx.beginPath();
+    for(let i=0;i<n;i++){const t=i/n,ang=t*Math.PI*6+spiralAngle,v=fd[Math.floor(t*(fd.length*.8))]/255;
+      const r=t*maxR+v*(38+beat*12),x=cx+Math.cos(ang)*r,y=cy+Math.sin(ang)*r;
+      i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+      if(v>.55){ctx.shadowColor=gc(i,n);ctx.shadowBlur=8+beat*10;
+        ctx.fillStyle=gc(i,n,.7+v*.3);ctx.beginPath();ctx.arc(x,y,v*4+beat*1.5,0,Math.PI*2);ctx.fill();}}
+    ctx.shadowBlur=0;ctx.strokeStyle=gc(0,1,.75);ctx.lineWidth=1.5+beat*.4;ctx.stroke();}
+
+  function drawPolygon(fd,_,w,h){
+    polyRot+=0.012+beat*.018;
+    const cx=w/2,cy=h/2,sides=6,layers=5;
+    for(let l=0;l<layers;l++){
+      const t=l/layers,baseR=(0.1+t*.28)*Math.min(w,h),v=fd[Math.floor(t*fd.length/2)]/255;
+      const r=baseR+v*baseR*.5+beat*baseR*.12,rot=polyRot*(l%2===0?1:-1);
+      ctx.beginPath();
+      for(let s=0;s<=sides;s++){const ang=(s/sides)*Math.PI*2+rot,vv=fd[Math.floor(s/sides*fd.length*.5)]/255;
+        const vr=r+vv*22+beat*8;
+        s===0?ctx.moveTo(cx+Math.cos(ang)*vr,cy+Math.sin(ang)*vr):ctx.lineTo(cx+Math.cos(ang)*vr,cy+Math.sin(ang)*vr);}
+      ctx.closePath();ctx.fillStyle=gc(l,layers,0.06+v*.15+beat*.04);ctx.fill();
+      if(v>.5||beat>.6){ctx.shadowColor=gc(l,layers);ctx.shadowBlur=9*(v+beat*.4)}else ctx.shadowBlur=0;
+      ctx.strokeStyle=gc(l,layers,.35+v*.65+beat*.15);ctx.lineWidth=1+v*2+beat*.8;ctx.stroke();}
+    ctx.shadowBlur=0;}
+
+  function initParticles(w,h){
+    particles_arr=Array.from({length:130},()=>({
+      x:w/2+(Math.random()-.5)*w*.4,y:h/2+(Math.random()-.5)*h*.4,
+      vx:(Math.random()-.5)*1.5,vy:(Math.random()-.5)*1.5,
+      size:1+Math.random()*2.5,freq:Math.floor(Math.random()*100)}));}
+  function drawParticles(fd,_,w,h){
+    if(!particles_arr)initParticles(w,h);
+    const cx=w/2,cy=h/2,orbitR=Math.min(w,h)*.32;
+    particles_arr.forEach((pt,i)=>{
+      const fv=fd[pt.freq]/255;
+      pt.vx+=(Math.random()-.5)*fv*.6;pt.vy+=(Math.random()-.5)*fv*.6;
+      const dx=pt.x-cx,dy=pt.y-cy,dist=Math.sqrt(dx*dx+dy*dy)||1;
+      pt.vx-=dx/dist*.002*dist*.05*20;pt.vy-=dy/dist*.002*dist*.05*20;
+      if(beat>.5){pt.vx-=(dx/dist)*beat*.4;pt.vy-=(dy/dist)*beat*.4;}
+      pt.vx*=0.86;pt.vy*=0.86;pt.x+=pt.vx;pt.y+=pt.vy;
+      if(pt.x<20)pt.vx+=.4;if(pt.x>w-20)pt.vx-=.4;
+      if(pt.y<20)pt.vy+=.4;if(pt.y>h-20)pt.vy-=.4;
+      if(fv>.5){ctx.shadowColor=gc(i,130);ctx.shadowBlur=7*fv}else ctx.shadowBlur=0;
+      ctx.beginPath();ctx.arc(pt.x,pt.y,pt.size+fv*3.5+beat*1.5,0,Math.PI*2);
+      ctx.fillStyle=gc(i,130,.35+fv*.65);ctx.fill();});ctx.shadowBlur=0;}
+
+  function drawOrbit(fd,_,w,h){
+    const cx=w/2,cy=h/2,n=160,br=Math.min(w,h)*(.19+beat*.03);
+    ctx.strokeStyle=gc(0,1,.18);ctx.lineWidth=1;ctx.beginPath();ctx.arc(cx,cy,br,0,Math.PI*2);ctx.stroke();
+    for(let i=0;i<n;i++){const ang=(i/n)*Math.PI*2-Math.PI/2,v=fd[i%fd.length]/255;
+      const r2=br+v*(Math.min(w,h)*.28+beat*12);
+      const col=gc(i,n,.3+v*.7);
+      if(v>.6){ctx.shadowColor=col;ctx.shadowBlur=6+beat*7}else ctx.shadowBlur=0;
+      ctx.strokeStyle=col;ctx.lineWidth=1+v*2+beat*.5;
+      ctx.beginPath();ctx.moveTo(cx+Math.cos(ang)*br,cy+Math.sin(ang)*br);
+      ctx.lineTo(cx+Math.cos(ang)*r2,cy+Math.sin(ang)*r2);ctx.stroke();}
+    ctx.shadowBlur=0;
+    const av=avg(fd,0,16)/255;ctx.fillStyle=gc(0,1);
+    ctx.beginPath();ctx.arc(cx,cy,3+av*7+beat*4,0,Math.PI*2);ctx.fill();}
+
+  function drawDna(fd,_,w,h){
+    dnaOffset+=1.8+beat*1.8;
+    const segments=80,segW=w/segments,amp=h*(.26+beat*.06);
+    for(let i=0;i<segments;i++){
+      const x=(i+.5)*segW,t=(i/segments)*Math.PI*4+(dnaOffset*Math.PI/60);
+      const fv=fd[Math.floor(i/segments*fd.length*.65)]/255;
+      const extra=fv*35+beat*10,y1=h/2+Math.sin(t)*(amp+extra),y2=h/2+Math.sin(t+Math.PI)*(amp+extra);
+      if(fv>.4||beat>.4){ctx.shadowColor=gc(i,segments);ctx.shadowBlur=7*fv+beat*5}else ctx.shadowBlur=0;
+      const r=2+fv*5+beat*1.5;
+      ctx.beginPath();ctx.arc(x,y1,r,0,Math.PI*2);ctx.fillStyle=gc(i,segments);ctx.fill();
+      ctx.beginPath();ctx.arc(x,y2,r,0,Math.PI*2);ctx.fillStyle=gc(segments-i,segments);ctx.fill();
+      if(i%4===0){ctx.shadowBlur=0;ctx.strokeStyle=gc(i,segments,fv>.35?.65:.15);
+        ctx.lineWidth=1+fv+beat*.4;ctx.beginPath();ctx.moveTo(x,y1);ctx.lineTo(x,y2);ctx.stroke();}
+      if(i>0){const px=(i-.5)*segW,t2=((i-1)/segments)*Math.PI*4+(dnaOffset*Math.PI/60),pe=fd[Math.floor((i-1)/segments*fd.length*.65)]/255*35+beat*10;
+        ctx.shadowBlur=0;ctx.lineWidth=1.5+beat*.3;
+        ctx.strokeStyle=gc(i,segments);ctx.beginPath();ctx.moveTo(px,h/2+Math.sin(t2)*(amp+pe));ctx.lineTo(x,y1);ctx.stroke();
+        ctx.strokeStyle=gc(segments-i,segments);ctx.beginPath();ctx.moveTo(px,h/2+Math.sin(t2+Math.PI)*(amp+pe));ctx.lineTo(x,y2);ctx.stroke();}}
+    ctx.shadowBlur=0;}
+
+  function initStars(w,h){stars=Array.from({length:180},()=>({
+    ang:Math.random()*Math.PI*2,baseD:Math.pow(Math.random(),.5)*Math.min(w,h)*.45,
+    size:.4+Math.random()*1.6,speed:(.0002+Math.random()*.0007)*(Math.random()<.5?1:-1),
+    freq:Math.floor(Math.random()*120),hue:Math.random()*300+200}));}
+  function drawGalaxy(fd,_,w,h){
+    if(!stars)initStars(w,h);
+    galaxyAngle+=0.003+beat*.007;
+    const cx=w/2,cy=h/2;
+    for(let i=0;i<3;i++){
+      const ang=galaxyAngle*1.5+i*(Math.PI*2/3),bv=avg(fd,i*20,(i+1)*20)/255;
+      const r=Math.min(w,h)*(.15+beat*.08),gx=cx+Math.cos(ang)*Math.min(w,h)*.18,gy=cy+Math.sin(ang)*Math.min(w,h)*.18;
+      const gr=ctx.createRadialGradient(gx,gy,0,gx,gy,r*(1+bv*.5));
+      gr.addColorStop(0,gc(i*40,120,0.12+bv*.18));gr.addColorStop(1,gc(i*40,120,0));
+      ctx.fillStyle=gr;ctx.beginPath();ctx.arc(gx,gy,r*(1+bv*.5),0,Math.PI*2);ctx.fill();}
+    stars.forEach((st,i)=>{
+      st.ang+=st.speed*(1+beat*.35);
+      const fv=fd[st.freq]/255,ang=st.ang+galaxyAngle,d=st.baseD*(1+beat*.06*fv);
+      const x=cx+Math.cos(ang)*d,y=cy+Math.sin(ang)*d;
+      if(fv>.5||beat>.55){ctx.shadowColor=gc(i,stars.length);ctx.shadowBlur=5+beat*6}else ctx.shadowBlur=0;
+      ctx.beginPath();ctx.arc(x,y,st.size+fv*2.5+beat*2,0,Math.PI*2);
+      ctx.fillStyle=gc(i,stars.length,.5+fv*.5+beat*.3);ctx.fill();});
+    ctx.shadowBlur=0;
+    const bv=avg(fd,0,4)/255,gr2=ctx.createRadialGradient(cx,cy,0,cx,cy,(8+beat*16)*3);
+    gr2.addColorStop(0,gc(0,1,.5+beat*.4));gr2.addColorStop(1,gc(0,1,0));
+    ctx.fillStyle=gr2;ctx.beginPath();ctx.arc(cx,cy,(8+beat*16)*3,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='#0e0e18';ctx.beginPath();ctx.arc(cx,cy,8+beat*16,0,Math.PI*2);ctx.fill();}
+
+  function initPlasma(w,h){
+    plasmaBlobs=Array.from({length:5},(_,i)=>({
+      x:w*.2+Math.random()*w*.6,y:h*.2+Math.random()*h*.6,
+      vx:(Math.random()-.5)*3,vy:(Math.random()-.5)*3,
+      baseR:22+Math.random()*24,freq:Math.floor(i*(100/5)),hueOff:i*(360/5),shockwaves:[],lastB:0}));}
+  function drawPlasma(fd,_,w,h){
+    if(!plasmaBlobs)initPlasma(w,h);
+    const now=performance.now();
+    plasmaBlobs.forEach((b,bi)=>{
+      const fv=fd[b.freq]/255,speed=1+fv*3+beat*4;
+      b.x+=b.vx*speed;b.y+=b.vy*speed;
+      let bounced=false;
+      if(b.x<b.baseR){b.x=b.baseR;b.vx=Math.abs(b.vx);bounced=true}
+      if(b.x>w-b.baseR){b.x=w-b.baseR;b.vx=-Math.abs(b.vx);bounced=true}
+      if(b.y<b.baseR){b.y=b.baseR;b.vy=Math.abs(b.vy);bounced=true}
+      if(b.y>h-b.baseR){b.y=h-b.baseR;b.vy=-Math.abs(b.vy);bounced=true}
+      if(bounced||beat>0.7&&now-b.lastB>180){
+        b.shockwaves.push({x:b.x,y:b.y,r:b.baseR,maxR:Math.min(w,h)*(.3+fv*.4+beat*.3),life:1,width:3+beat*4});
+        b.lastB=now;}
+      b.shockwaves=b.shockwaves.filter(sw=>{
+        sw.r+=(sw.maxR-sw.r)*.12;sw.life-=.025;if(sw.life<=0)return false;
+        const col=pal==='r'?`hsla(${b.hueOff},80%,65%,${sw.life*.7})`:gc(bi,plasmaBlobs.length,sw.life*.7);
+        ctx.beginPath();ctx.arc(sw.x,sw.y,sw.r,0,Math.PI*2);
+        ctx.strokeStyle=col;ctx.lineWidth=2+sw.life*4;ctx.shadowColor=col;ctx.shadowBlur=12*sw.life;ctx.stroke();
+        ctx.shadowBlur=0;return true;});
+      const r=b.baseR*(1+fv*.8+beat*.9);
+      const grd=ctx.createRadialGradient(b.x,b.y,0,b.x,b.y,r*2.2);
+      const bc=pal==='r'?`hsla(${b.hueOff},80%,65%,`:gc(bi,plasmaBlobs.length,0).replace(/,[^,]+\)$/,',');
+      grd.addColorStop(0,gc(bi,plasmaBlobs.length,.55+fv*.3+beat*.15));
+      grd.addColorStop(1,gc(bi,plasmaBlobs.length,0));
+      ctx.beginPath();ctx.arc(b.x,b.y,r*2.2,0,Math.PI*2);
+      ctx.fillStyle=grd;if(fv>.5||beat>.5){ctx.shadowColor=gc(bi,plasmaBlobs.length);ctx.shadowBlur=20*(fv+beat)}else ctx.shadowBlur=6;
+      ctx.fill();
+      ctx.beginPath();ctx.arc(b.x,b.y,r*.5,0,Math.PI*2);
+      ctx.fillStyle=gc(bi,plasmaBlobs.length,.6+fv*.4);ctx.shadowBlur=0;ctx.fill();});
+    for(let i=0;i<plasmaBlobs.length;i++)for(let j=i+1;j<plasmaBlobs.length;j++){
+      const a=plasmaBlobs[i],b2=plasmaBlobs[j],dx=a.x-b2.x,dy=a.y-b2.y,dist=Math.sqrt(dx*dx+dy*dy);
+      if(dist<Math.min(w,h)*(.25+beat*.15)){
+        const al=(1-dist/(Math.min(w,h)*(.25+beat*.15)))*(.4+beat*.4);
+        ctx.strokeStyle=gc(i,plasmaBlobs.length,al);ctx.lineWidth=1+beat*3;
+        ctx.shadowColor=gc(0,1);ctx.shadowBlur=6+beat*14;
+        ctx.beginPath();ctx.moveTo(a.x,a.y);
+        const mx=(a.x+b2.x)/2+(Math.random()-.5)*20*beat,my=(a.y+b2.y)/2+(Math.random()-.5)*20*beat;
+        ctx.quadraticCurveTo(mx,my,b2.x,b2.y);ctx.stroke();ctx.shadowBlur=0;}}
+  }
+})();
+
+// ── now-playing bar (for future direct audio) ──────────────────────────────
+let npAudio = new Audio(), npPlaying = false;
+function openNp(title, src) {
+  npAudio.src = src; npAudio.play(); npPlaying = true;
+  document.getElementById('npTitle').textContent = title;
+  document.getElementById('nowPlaying').classList.add('visible');
+  document.getElementById('npPlayBtn').textContent = '⏸';
+}
+function toggleNpPlay() {
+  if (npPlaying) { npAudio.pause(); npPlaying=false; document.getElementById('npPlayBtn').textContent='▶'; }
+  else { npAudio.play(); npPlaying=true; document.getElementById('npPlayBtn').textContent='⏸'; }
+}
+function closeNp() {
+  npAudio.pause(); npPlaying=false;
+  document.getElementById('nowPlaying').classList.remove('visible');
+}
+function seekNp(e) {
+  if (!npAudio.duration) return;
+  const rect = document.getElementById('npProgressWrap').getBoundingClientRect();
+  npAudio.currentTime = ((e.clientX-rect.left)/rect.width)*npAudio.duration;
+}
+npAudio.addEventListener('timeupdate', () => {
+  if (!npAudio.duration) return;
+  const pct = (npAudio.currentTime/npAudio.duration)*100;
+  document.getElementById('npProgressFill').style.width = pct+'%';
+  const fmt = s => `${Math.floor(s/60)}:${String(Math.floor(s%60)).padStart(2,'0')}`;
+  document.getElementById('npTime').textContent = `${fmt(npAudio.currentTime)} / ${fmt(npAudio.duration)}`;
+});
+</script>
+</body>
+</html>
